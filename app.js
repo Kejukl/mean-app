@@ -1,0 +1,47 @@
+const express = require('express');
+const app = express();
+
+var bodyParser=require("body-parser")
+app.use(bodyParser.urlencoded({extended:true})); // app.use(bodyParser.urlencoded)
+app.use(bodyParser.json())
+
+require("./models/db.js")
+var usersRouter=require("./routes/users.js")
+app.use("/users",usersRouter)
+
+var AuthRouter=require("./routes/auth.js")
+app.use("/auth",AuthRouter)
+
+async function checkLoggedIn(req,res,next){
+    //var token=req.header('Authorisation');
+    console.log('Checking auth')
+    var token=req.query.token||req.body.token;
+    if(!token){
+        res.status(401).send('not authenticated')
+    }
+    var timenow=Date.now();
+    var loggedIn=await usersModel.find({token:token,token_expiry:{"$gt":timenow}})
+    console.log('line 23',token);
+    if (loggedIn.length){
+        req.user=loggedIn[0]
+        next()
+    }else{
+        res.status(401).send({message:'not authenticated'})
+    }
+}
+
+
+var physRouter=require("./routes/phys.js")
+app.use("/phys",checkLoggedIn,physRouter)
+var chemRouter=require("./routes/chem.js")
+app.use("/chem",chemRouter)
+
+app.use(express.static('public'));
+app.use("/", (req, res) => {
+    res.sendFile(__dirname + "/public/index.html");
+})
+
+app.listen(4801, () => {
+    console.log(__dirname)
+    console.log("Express server running in 4801")
+})

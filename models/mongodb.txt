@@ -1,0 +1,41 @@
+db.createCollection("users_master")
+db.users_master.insert({username: "N1", password:"12345",name:"N1p",email:"n2@yahoo.com",address:"3 London",token:"null",token_expiry:"null",isActive:"true",Admission_date:"04-04-2004",current_class:"year 9",designation:"student"})
+db.users_master.insert({username: "N2", password:"12345",name:"N2p",email:"n2@yahoo.com",address:"3 London",token:"null",token_expiry:"null",isActive:"true",Admission_date:"04-04-2004",current_class:"year 9",designation:"student"})
+
+
+
+
+database name:
+phy_questions
+
+db.createCollection("phys_questions");
+db.phys_questions.insert({Serial_number: "100",year: "2012",month:"June", question_number:"1",question:"What is Newton's First Law",marks:"5"})
+
+db.createCollection("chem_questions")
+db.chem_questions.insert({Serial_number: "100",year: "2012",month:"June", question_number:"1",question:"What is Avegadro number?",marks:"5"})
+
+
+
+db.users_master.insert({username: "N2", password:"12345",name:"N2p",email:"n2@yahoo.com",address:"3 London",phone:"07702825691",token:"null",token_expiry:"null",isActive:"true"})
+
+async function checkLoggedIn(req,res,next){
+    //var token=req.header('Authorisation');
+    var token=req.query.token||req.body.token;
+    if(!token){
+        res.status(401).send('not authenticated')
+    }
+    var timenow=Date.now();
+    var loggedIn=await usersModel.find({token:token,token_expiry:{"$gt":timenow}})
+    console.log(token);
+    if (loggedIn.length){
+        req.user=loggedIn[0]
+        next()
+    }else{
+        res.status(401).send('not authenticated')
+    }
+}
+
+db.users_master.insert({username: "N6", password:"12345",name:"N6p",email:"n2@yahoo.com",address:"3 London",phone:"07702825691",token:"null",token_expiry:"null",isActive:"true"})
+
+
+
