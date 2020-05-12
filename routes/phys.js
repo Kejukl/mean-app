@@ -18,6 +18,7 @@ router.get("/:id", async (req, res) => {
 
 
 router.get("/", async (req, res) => {
+    console.log('getting physics')
     var criObj = {};
     var year=req.query.year||req.body.year
     if (year) {
@@ -31,7 +32,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
     var body = req.body;
     var obj = {
-        Serial_number: body.number,
+        Serial_number: body.Serial_number,
         year: body.year,
         month:body.month, 
         question_number:body.question_number,
@@ -43,11 +44,14 @@ router.post("/", async (req, res) => {
     var result = await insertObj.save();
     console.log("result::::", result)
     res.send({ message: "record inserted", id: result._id })
+    //res.send({message:"post section"})
 });
 
 router.put("/:id", async (req, res) => {
     console.log('inside id search')
     var id = req.params.id;
+    console.log('the required Id is',id)
+
     var records = null;
     if (mongoose.Types.ObjectId.isValid(id)) {
         records = await physModel.findOne({ _id: id });

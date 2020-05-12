@@ -7,7 +7,7 @@ app.use(bodyParser.json())
 
 require("./models/db.js")
 var usersRouter=require("./routes/users.js")
-app.use("/users",usersRouter)
+app.use("/users",checkLoggedIn,checkUserLevel,usersRouter)
 
 var AuthRouter=require("./routes/auth.js")
 app.use("/auth",AuthRouter)
@@ -30,11 +30,23 @@ async function checkLoggedIn(req,res,next){
     }
 }
 
+async function checkUserLevel(req,res,next){
+    console.log("In check level")
+    console.log(req.user.designation)
+    userLevel=req.user.designation
+    if(userLevel=="Head"){
+        console.log('user is Head and accessing user data')
+        next()
+    }else{
+        res.status(402).send({message:'not authenticated'})
+    }
+}
 
 var physRouter=require("./routes/phys.js")
 app.use("/phys",checkLoggedIn,physRouter)
 var chemRouter=require("./routes/chem.js")
 app.use("/chem",chemRouter)
+
 
 app.use(express.static('public'));
 app.use("/", (req, res) => {

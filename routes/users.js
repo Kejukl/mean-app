@@ -18,17 +18,19 @@ router.get("/:id", async (req, res) => {
 
 
 router.get("/", async (req, res) => {
+    console.log('inside user get method')
     var criObj = {};
     var username=req.query.username
-    console.log(username)
     if (username) {
         criObj.username = username;
+        console.log(username)
     }
     var records = await usersModel.find(criObj);
     res.send(records);
 })
 
 router.post("/", async (req, res) => {
+    console.log('posting a new user')
     var body = req.body;
     var obj = {
         username: body.name,
@@ -37,8 +39,8 @@ router.post("/", async (req, res) => {
         email:body.email,
         address:body.address,
         phone:body.phone,
-        token:body.token,
-        token_expiry:Number(body.token_expiry),
+        token:'',
+        token_expiry:+0,
         isActive:Boolean(body.isActive),
         Admission_date:Number(body.Admission_date),
         current_class:body.current_class,
@@ -71,7 +73,7 @@ router.put("/:id", async (req, res) => {
         address:body.address,
         phone:body.phone,
         token:body.token,
-        token_expiry:Number(body.token_expiry),
+        token_expiry:0,
         isActive:Boolean(body.isActive),
         Admission_date:Number(body.Admission_date),
         current_class:body.current_class,

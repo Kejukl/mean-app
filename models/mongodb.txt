@@ -2,6 +2,7 @@ db.createCollection("users_master")
 db.users_master.insert({username: "N1", password:"12345",name:"N1p",email:"n2@yahoo.com",address:"3 London",token:"null",token_expiry:"null",isActive:"true",Admission_date:"04-04-2004",current_class:"year 9",designation:"student"})
 db.users_master.insert({username: "N2", password:"12345",name:"N2p",email:"n2@yahoo.com",address:"3 London",token:"null",token_expiry:"null",isActive:"true",Admission_date:"04-04-2004",current_class:"year 9",designation:"student"})
 
+db.users_master.insert({username: "E1", password:"12345",name:"E1p",email:"e1@yahoo.com",address:"3 London",token:"null",token_expiry:"null",isActive:"true",Admission_date:"04-04-2004",current_class:"year 9",designation:"Head"})
 
 
 
